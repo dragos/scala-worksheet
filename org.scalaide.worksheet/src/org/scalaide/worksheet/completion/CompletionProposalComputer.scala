@@ -1,18 +1,17 @@
 package org.scalaide.worksheet.completion
 
-import org.scalaide.core.compiler.ScalaPresentationCompiler
 import org.scalaide.util.internal.ScalaWordFinder
 import org.scalaide.core.completion.ScalaCompletions
 import org.scalaide.ui.internal.completion.ScalaCompletionProposal
 import org.scalaide.util.internal.eclipse.EditorUtils
 import scala.reflect.internal.util.SourceFile
-
 import org.eclipse.jface.text.ITextViewer
 import org.eclipse.jface.text.contentassist.ICompletionProposal
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor
 import org.eclipse.jface.text.contentassist.IContextInformation
 import org.eclipse.ui.texteditor.ITextEditor
 import org.scalaide.worksheet.ScriptCompilationUnit
+import org.scalaide.core.compiler.IScalaPresentationCompiler
 
 class CompletionProposalComputer(textEditor: ITextEditor) extends ScalaCompletions with IContentAssistProcessor {
   override def getCompletionProposalAutoActivationCharacters() = Array('.')
@@ -34,7 +33,7 @@ class CompletionProposalComputer(textEditor: ITextEditor) extends ScalaCompletio
     }
   }
 
-  private def findCompletions(viewer: ITextViewer, position: Int, scu: ScriptCompilationUnit)(sourceFile: SourceFile, compiler: ScalaPresentationCompiler): List[ICompletionProposal] = {
+  private def findCompletions(viewer: ITextViewer, position: Int, scu: ScriptCompilationUnit)(sourceFile: SourceFile, compiler: IScalaPresentationCompiler): List[ICompletionProposal] = {
     val region = ScalaWordFinder.findCompletionPoint(viewer.getDocument.get, position)
 
     val res = findCompletions(region)(position, scu)(sourceFile, compiler).sortBy(_.relevance).reverse

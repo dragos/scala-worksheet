@@ -60,7 +60,7 @@ case class ScriptCompilationUnit(val workspaceFile: IFile) extends InteractiveCo
 
   override def currentProblems: List[IProblem] = {
     scalaProject.presentationCompiler { pc =>
-      pc.problemsOf(file)
+      pc.problemsOf(this)
     }.getOrElse(Nil)
   }
 
@@ -70,7 +70,7 @@ case class ScriptCompilationUnit(val workspaceFile: IFile) extends InteractiveCo
   override def reconcile(newContents: String): List[IProblem] =
     scalaProject.presentationCompiler { pc =>
       askReload(newContents.toCharArray)
-      pc.problemsOf(file)
+      pc.problemsOf(this)
     }.getOrElse(Nil)
 
   def askReload(newContents: Array[Char] = getContents): Unit =
